@@ -1,4 +1,4 @@
-FROM redhat/ubi8
+FROM redhat/ubi%ver%
 
 RUN dnf update -y --refresh
 

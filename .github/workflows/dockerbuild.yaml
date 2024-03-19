@@ -7,13 +7,25 @@ on:
 
 jobs:
   build-docker:
+
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        rhel-ver: ["8", "9"]
+
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+
+      - name: Set RHEL version in Dockerfile
+        run: sed -i 's/%ver%/${{ matrix.rhel-ver }}/' Dockerfile
 
       - name: Build Docker Image
         uses: docker/build-push-action@v5
         with:
+          context: .
+          file: Dockerfile
           push: false
           tags: daphne-rhel:latest
